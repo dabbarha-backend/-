@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>دبّرها</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#eef2f7;font-family:Arial,sans-serif;color:#172033}
+.app{max-width:520px;margin:auto;min-height:100vh;background:#fff}
+header{padding:24px 20px 18px;background:linear-gradient(135deg,#172554,#2563eb);color:#fff;border-radius:0 0 28px 28px}
+header small{opacity:.8}h1{margin:6px 0;font-size:32px}.tag{font-size:15px;opacity:.9}
+main{padding:18px 16px 85px}.box{background:#f7f9fc;border:1px solid #e3e8f2;border-radius:20px;padding:16px;margin-bottom:16px}
+textarea{width:100%;height:115px;border:0;outline:0;background:transparent;font-size:17px;resize:none}
+.actions{display:flex;gap:8px}.btn{flex:1;border:0;border-radius:14px;padding:13px;background:#2563eb;color:#fff;font-weight:bold;font-size:15px}
+.btn.secondary{background:#e9eef8;color:#17315f}
+h2{font-size:19px;margin:20px 2px 12px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tool{border:1px solid #e4e9f2;background:#fff;border-radius:17px;padding:16px;text-align:right;font-size:16px}
+.tool b{display:block;margin-top:7px}.emoji{font-size:26px}
+#result{display:none}.step{padding:12px 0;border-bottom:1px solid #e7ebf2}.step:last-child{border:0}
+.step span{display:inline-block;width:28px;height:28px;text-align:center;padding-top:5px;background:#dbeafe;color:#1d4ed8;border-radius:50%;margin-left:8px;font-weight:bold}
+.bottom{position:fixed;bottom:0;left:50%;transform:translateX(-50%);max-width:520px;width:100%;height:68px;background:#fff;border-top:1px solid #e7eaf0;display:flex;justify-content:space-around;align-items:center}.nav{font-size:12px;text-align:center;color:#667085}.nav b{display:block;font-size:22px;color:#2563eb}
+</style>
+</head>
+<body>
+<div class="app">
+<header><small>مساعدك للحياة اليومية</small><h1>دبّرها 👋</h1><div class="tag">مشكلتك؟ خلّينا نحوّلها لخطة واضحة.</div></header>
+<main>
+<div class="box">
+<textarea id="problem" placeholder="اكتب مشكلتك هنا... مثال: عندي امتحان بعد 10 أيام وما عارف أبدأ"></textarea>
+<div class="actions">
+<button class="btn secondary" onclick="demo()">🎤 اتكلم</button>
+<button class="btn" onclick="solve()">✨ دبّرها لي</button>
+</div>
+</div>
+
+<section id="result" class="box">
+<h2 style="margin-top:0">فهمت مشكلتك ✅</h2>
+<div id="understood"></div>
+<h2>خطتك المقترحة 🗺️</h2>
+<div id="steps"></div>
+<button class="btn" onclick="savePlan()">📌 حفظ الخطة</button>
+</section>
+
+<h2>⚡ أدوات سريعة</h2>
+<div class="grid">
+<button class="tool" onclick="fill('أريد تنظيم مصروفي وميزانيتي')"><span class="emoji">💰</span><b>ميزانيتي</b></button>
+<button class="tool" onclick="fill('أريد خطة للمذاكرة')"><span class="emoji">📚</span><b>دراستي</b></button>
+<button class="tool" onclick="fill('أريد تجهيز سيرة ذاتية والبحث عن عمل')"><span class="emoji">💼</span><b>وظيفتي</b></button>
+<button class="tool" onclick="fill('أريد فهم هذا المستند')"><span class="emoji">📝</span><b>مستنداتي</b></button>
+<button class="tool" onclick="fill('أريد ترجمة نص')"><span class="emoji">🌐</span><b>الترجمة</b></button>
+<button class="tool" onclick="fill('أريد مساعدتي في اختيار وشراء شيء')"><span class="emoji">🛒</span><b>مشترياتي</b></button>
+</div>
+</main>
+<div class="bottom">
+<div class="nav"><b>⌂</b>الرئيسية</div><div class="nav"><b>⚙</b>أدواتي</div><div class="nav"><b>📌</b>المحفوظات</div><div class="nav"><b>👤</b>حسابي</div>
+</div>
+</div>
+<script>
+const p=document.getElementById('problem');
+function fill(t){p.value=t;p.focus();window.scrollTo({top:0,behavior:'smooth'})}
+function demo(){alert('🎤 في النسخة القادمة نضيف تسجيل الصوت وتحويل الكلام إلى نص.')}
+function solve(){
+ let v=p.value.trim();
+ if(!v){alert('اكتب المشكلة أولاً ✍️');return}
+ let plan;
+ if(/امتحان|دراسة|مذاكر/.test(v)) plan=['حدد المواد والمواضيع المطلوبة','قسّم الوقت على الأيام المتبقية','ابدأ بأصعب جزء لمدة 45 دقيقة','حل أسئلة تدريبية ثم راجع أخطاءك','اختبر نفسك في نهاية كل يوم'];
+ else if(/فلوس|مال|مصروف|ميزان/.test(v)) plan=['اكتب دخلك والمبلغ المتاح','حدد المصروفات الضرورية أولاً','أوقف أو خفّض المصروفات غير الضرورية','ضع مبلغاً يومياً أو أسبوعياً للإنفاق','راجع الخطة بعد 7 أيام وعدّلها'];
+ else if(/عمل|وظيف|cv|سيرة/.test(v)) plan=['حدد نوع الوظيفة التي تبحث عنها','جهّز سيرة ذاتية مختصرة وواضحة','اكتب رسالة تقديم مناسبة لكل فرصة','قدّم يومياً لعدة فرص موثوقة','سجّل الطلبات وتابع الردود'];
+ else if(/ترجم|لغة/.test(v)) plan=['حدد اللغة المطلوبة','أرسل النص أو الصورة','راجع الأسماء والأرقام والمصطلحات','احتفظ بالنسخة الأصلية والترجمة'];
+ else if(/ورقة|مستند|نموذج/.test(v)) plan=['حدد نوع المستند','صوّر الصفحة بوضوح أو اكتب محتواها','نحدد الخانات المطلوبة','نشرح كل خانة قبل تعبئتها','راجع المعلومات قبل الإرسال'];
+ else plan=['نحدد المشكلة والهدف بوضوح','نقسمها إلى أجزاء صغيرة','نبدأ بأول خطوة يمكن تنفيذها الآن','نراجع النتيجة ونعدّل الخطة','نحدد الخطوة التالية'];
+ document.getElementById('understood').innerHTML='<b>المشكلة:</b> '+v;
+ document.getElementById('steps').innerHTML=plan.map((s,i)=>`<div class="step"><span>${i+1}</span>${s}</div>`).join('');
+ document.getElementById('result').style.display='block';
+ document.getElementById('result').scrollIntoView({behavior:'smooth'});
+}
+function savePlan(){alert('✅ تم حفظ الخطة في النسخة التجريبية.')}
+</script>
+</body></html>
